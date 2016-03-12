@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一款精致的VIM配置vim_config发布 | Vic的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="vim_config一款非常精致的vim配置，集成常用的插件，精美的配色，使用方法简单。如果你是一个vim新手，vim_config正适合你。如果你是vim高手，但又讨厌复杂的vim配置，vim_config同样适合你。
+内容更新：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一款精致的VIM配置vim_config发布">
+<meta property="og:url" content="http://blog.libgod.com/archives/vim-config-v1-0.html">
+<meta property="og:site_name" content="Vic的博客">
+<meta property="og:description" content="vim_config一款非常精致的vim配置，集成常用的插件，精美的配色，使用方法简单。如果你是一个vim新手，vim_config正适合你。如果你是vim高手，但又讨厌复杂的vim配置，vim_config同样适合你。
+内容更新：">
+<meta property="og:updated_time" content="2016-03-12T16:45:19.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一款精致的VIM配置vim_config发布">
+<meta name="twitter:description" content="vim_config一款非常精致的vim配置，集成常用的插件，精美的配色，使用方法简单。如果你是一个vim新手，vim_config正适合你。如果你是vim高手，但又讨厌复杂的vim配置，vim_config同样适合你。
+内容更新：">
+  
+    <link rel="alternative" href="/atom.xml" title="Vic的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+      <script>
+          var _hmt = _hmt || [];
+          (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?b6483c72a5edf9fd85aac6f170cd4513";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+          })();
+      </script>
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <!-- <div class="overlay"></div> -->
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Vic</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">致力于高并发服务端研发..</p>
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/tags">分类标签</a></li>
+                        
+                            <li><a href="//libgod.com">libGod</a></li>
+                        
+                            <li><a href="/vim-config">VIM配置</a></li>
+                        
+                            <li><a href="/wake-on-lan">远程开机</a></li>
+                        
+                            <li><a href="/signature">艺术签名</a></li>
+                        
+                            <li><a href="/about">关于我们</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tag/boost/" style="font-size: 10px;">Boost</a> <a href="/tag/c-cplusplus/" style="font-size: 20px;">C/C++</a> <a href="/tag/linux/" style="font-size: 20px;">Linux</a> <a href="/tag/python/" style="font-size: 10px;">Python</a> <a href="/tag/stl/" style="font-size: 10px;">STL</a> <a href="/tag/socket/" style="font-size: 10px;">Socket</a> <a href="/tag/vim/" style="font-size: 10px;">Vim</a> <a href="/tag/coroutine/" style="font-size: 10px;">协程</a> <a href="/tag/multithread/" style="font-size: 20px;">多线程</a> <a href="/tag/benchmark/" style="font-size: 20px;">性能测试</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://www.oschina.net">开源中国</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Vic</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Vic</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">致力于高并发服务端研发..</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/tags">分类标签</a></li>
+                
+                    <li><a href="//libgod.com">libGod</a></li>
+                
+                    <li><a href="/vim-config">VIM配置</a></li>
+                
+                    <li><a href="/wake-on-lan">远程开机</a></li>
+                
+                    <li><a href="/signature">艺术签名</a></li>
+                
+                    <li><a href="/about">关于我们</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-vim-config-v1-0" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/vim-config-v1-0.html" class="article-date">
+      <time datetime="2015-01-27T01:51:07.000Z" itemprop="datePublished">2015-01-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一款精致的VIM配置vim_config发布
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/operating-system/">操作系统</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/vim/">Vim</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>vim_config一款非常精致的vim配置，集成常用的插件，精美的配色，使用方法简单。如果你是一个vim新手，vim_config正适合你。如果你是vim高手，但又讨厌复杂的vim配置，vim_config同样适合你。</p>
+<p>内容更新：</p>
+<a id="more"></a>
+<ol>
+<li>简化安装步骤。把项目pull下来，只要运行安装文件<code>install.sh</code>就好了。</li>
+<li>精美的配色。采用流行的molokai配色方案，如果你经常写代码，这款配色再适合不过了。</li>
+<li>高效的多文件编辑。能同时编辑多个文件，轻易的在多个文件之间切换。</li>
+<li>轻松打开文件。只要按快捷键<code>Ctrl+p</code>，输入文件名，就能智能匹配要打开的文件。</li>
+<li>方便的快捷键。有一些常用的快捷键，操作轻松自如。</li>
+<li>自动添加文件头。新建一些常用格式的文件时，会智能插入文件头，例如签名、创建时间、修改时间等。</li>
+</ol>
+<p>除了列举的几项，还有很多隐藏BUFF等待着你，速速前往<a href="/vim-config">下载</a>。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/archives/vim-config-v1-0.html">一款精致的VIM配置vim_config发布</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Vic 的个人博客">Vic</a></p>
+        <p><span>发布时间:</span>2015年01月27日 - 09时51分</p>
+        <p><span>最后更新:</span>2016年03月13日 - 00时45分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/archives/vim-config-v1-0.html" title="一款精致的VIM配置vim_config发布">http://blog.libgod.com/archives/vim-config-v1-0.html</a>
+            <span class="copy-path" data-clipboard-text="原文: http://blog.libgod.com/archives/vim-config-v1-0.html　　作者: Vic" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/archives/about-coroutine.html">
+                    聊聊协程
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/archives/wake-on-lan-code.html">
+                    远程开机脚本
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="archives/vim-config-v1-0.html" data-title="一款精致的VIM配置vim_config发布" data-url="http://blog.libgod.com/archives/vim-config-v1-0.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"libgod"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/archives/about-coroutine.html" title="上一篇: 聊聊协程">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/archives/wake-on-lan-code.html" title="下一篇: 远程开机脚本">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/archives/about-coroutine.html">聊聊协程</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/vim-config-v1-0.html">一款精致的VIM配置vim_config发布</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/wake-on-lan-code.html">远程开机脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tcp-echo-server.html">简单的echo服务器</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/stl-vector-erase-question.html">stl::vector erase 时元素析构问题的辟谣</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/transfor-descriptor.html">进程间传递描述符</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/likely-and-unlikely.html">内核中的 likely()与unlikely()</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/multi-server-framework.html">游戏多服务器架构的一点想法</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tuple-class.html">C++实现的Tuple类，非常好用</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/uuid-class.html">UUID的封装类</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/check-dead-lock.html">如何检测死锁并快速定位死锁位置</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tls-performance.html">几种线程本地存储变量和普通变量的性能比较</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/multi-index-container-performance.html">multi_index_container性能测试</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Vic
+            </div>
+            <div class="footer-right">
+                <script src="http://s24.cnzz.com/stat.php?id=4739340&web_id=4739340&show=pic" language="JavaScript"></script>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

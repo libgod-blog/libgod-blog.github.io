@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>进程间传递描述符 | Vic的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="每个进程都拥有自己独立的进程空间，这使得描述符在进程之间的传递变得有点复杂，这个属于高级进程间通信的内容，下面就来说说。顺便把 Linux 和 Windows 平台都讲讲。
+Linux 下的描述符传递Linux 系统系下，子进程会自动继承父进程已打开的描述符，实际应用中，可能父进程需要向子进程传递“后打开的描述符”，或者子进程需要向父进程传递；或者两个进程可能是无关的，显然这需要一套传递机制。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程间传递描述符">
+<meta property="og:url" content="http://blog.libgod.com/archives/transfor-descriptor.html">
+<meta property="og:site_name" content="Vic的博客">
+<meta property="og:description" content="每个进程都拥有自己独立的进程空间，这使得描述符在进程之间的传递变得有点复杂，这个属于高级进程间通信的内容，下面就来说说。顺便把 Linux 和 Windows 平台都讲讲。
+Linux 下的描述符传递Linux 系统系下，子进程会自动继承父进程已打开的描述符，实际应用中，可能父进程需要向子进程传递“后打开的描述符”，或者子进程需要向父进程传递；或者两个进程可能是无关的，显然这需要一套传递机制。">
+<meta property="og:updated_time" content="2016-03-12T16:45:19.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程间传递描述符">
+<meta name="twitter:description" content="每个进程都拥有自己独立的进程空间，这使得描述符在进程之间的传递变得有点复杂，这个属于高级进程间通信的内容，下面就来说说。顺便把 Linux 和 Windows 平台都讲讲。
+Linux 下的描述符传递Linux 系统系下，子进程会自动继承父进程已打开的描述符，实际应用中，可能父进程需要向子进程传递“后打开的描述符”，或者子进程需要向父进程传递；或者两个进程可能是无关的，显然这需要一套传递机制。">
+  
+    <link rel="alternative" href="/atom.xml" title="Vic的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+      <script>
+          var _hmt = _hmt || [];
+          (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?b6483c72a5edf9fd85aac6f170cd4513";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+          })();
+      </script>
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <!-- <div class="overlay"></div> -->
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Vic</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">致力于高并发服务端研发..</p>
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/tags">分类标签</a></li>
+                        
+                            <li><a href="//libgod.com">libGod</a></li>
+                        
+                            <li><a href="/vim-config">VIM配置</a></li>
+                        
+                            <li><a href="/wake-on-lan">远程开机</a></li>
+                        
+                            <li><a href="/signature">艺术签名</a></li>
+                        
+                            <li><a href="/about">关于我们</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tag/boost/" style="font-size: 10px;">Boost</a> <a href="/tag/c-cplusplus/" style="font-size: 20px;">C/C++</a> <a href="/tag/linux/" style="font-size: 20px;">Linux</a> <a href="/tag/python/" style="font-size: 10px;">Python</a> <a href="/tag/stl/" style="font-size: 10px;">STL</a> <a href="/tag/socket/" style="font-size: 10px;">Socket</a> <a href="/tag/vim/" style="font-size: 10px;">Vim</a> <a href="/tag/coroutine/" style="font-size: 10px;">协程</a> <a href="/tag/multithread/" style="font-size: 20px;">多线程</a> <a href="/tag/benchmark/" style="font-size: 20px;">性能测试</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://www.oschina.net">开源中国</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Vic</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Vic</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">致力于高并发服务端研发..</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/tags">分类标签</a></li>
+                
+                    <li><a href="//libgod.com">libGod</a></li>
+                
+                    <li><a href="/vim-config">VIM配置</a></li>
+                
+                    <li><a href="/wake-on-lan">远程开机</a></li>
+                
+                    <li><a href="/signature">艺术签名</a></li>
+                
+                    <li><a href="/about">关于我们</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-transfor-descriptor" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/transfor-descriptor.html" class="article-date">
+      <time datetime="2014-12-21T08:22:34.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      进程间传递描述符
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/operating-system/">操作系统</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/linux/">Linux</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>每个进程都拥有自己独立的进程空间，这使得描述符在进程之间的传递变得有点复杂，这个属于高级进程间通信的内容，下面就来说说。顺便把 Linux 和 Windows 平台都讲讲。</p>
+<p>Linux 下的描述符传递<br>Linux 系统系下，子进程会自动继承父进程已打开的描述符，实际应用中，可能父进程需要向子进程传递“后打开的描述符”，或者子进程需要向父进程传递；或者两个进程可能是无关的，显然这需要一套传递机制。</p>
+<a id="more"></a>
+<p>简单的说，首先需要在这两个进程之间建立一个 Unix 域套接字接口作为消息传递的通道（ Linux 系统上使用socketpair 函数可以很方面便的建立起传递通道），然后发送进程调用 sendmsg 向通道发送一个特殊的消息，内核将对这个消息做特殊处理，从而将打开的描述符传递到接收进程。</p>
+<p>然后接收方调用 recvmsg 从通道接收消息，从而得到打开的描述符。然而实际操作起来并不像看起来那样单纯。</p>
+<p>先来看几个注意点：</p>
+<p>1 需要注意的是传递描述符并不是传递一个 int 型的描述符编号，而是在接收进程中创建一个新的描述符，并且在内核的文件表中，它与发送进程发送的描述符指向相同的项。</p>
+<p>2 在进程之间可以传递任意类型的描述符，比如可以是 pipe ， open ， mkfifo 或 socket ， accept 等函数返回的描述符，而不限于套接字。</p>
+<p>3 一个描述符在传递过程中（从调用 sendmsg 发送到调用 recvmsg 接收），内核会将其标记为“在飞行中”（in flight ）。在这段时间内，即使发送方试图关闭该描述符，内核仍会为接收进程保持打开状态。发送描述符会使其引用计数加 1 。</p>
+<p>4 描述符是通过辅助数据发送的（结构体 msghdr 的 msg_control 成员），在发送和接收描述符时，总是发送至少 1 个字节的数据，即使这个数据没有任何实际意义。否则当接收返回 0 时，接收方将不能区分这意味着“没有数据”（但辅助数据可能有套接字）还是“文件结束符”。</p>
+<p>5 具体实现时， msghdr 的 msg_control 缓冲区必须与 cmghdr 结构对齐，可以看到后面代码的实现使用了一个union 结构来保证这一点。</p>
+<p>msghdr 和 cmsghdr 结构体<br>上面说过，描述符是通过结构体 msghdr 的 msg_control 成员送的，因此在继续向下进行之前，有必要了解一下msghdr 和 cmsghdr 结构体，先来看看 msghdr 。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> msghdr &#123;  </span><br><span class="line">    <span class="keyword">void</span>       *msg_name;  </span><br><span class="line">    <span class="keyword">socklen_t</span>    msg_namelen;  </span><br><span class="line">    <span class="keyword">struct</span> iovec  *msg_iov;  </span><br><span class="line">    <span class="keyword">size_t</span>       msg_iovlen;  </span><br><span class="line">    <span class="keyword">void</span>       *msg_control;  </span><br><span class="line">    <span class="keyword">size_t</span>       msg_controllen;  </span><br><span class="line">    <span class="keyword">int</span>          msg_flags;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>结构成员可以分为下面的四组，这样看起来就清晰多了：</p>
+<p>1 套接口地址成员 msg_name 与 msg_namelen ；</p>
+<p>只有当通道是数据报套接口时才需要； msg_name 指向要发送或是接收信息的套接口地址。 msg_namelen 指明了这个套接口地址的长度。</p>
+<p>msg_name 在调用 recvmsg 时指向接收地址，在调用 sendmsg 时指向目的地址。注意， msg_name 定义为一个 (void <em>) 数据类型，因此并不需要将套接口地址显示转换为 (struct sockaddr </em>) 。</p>
+<p>2 I/O 向量引用 msg_iov 与 msg_iovlen</p>
+<p>它是实际的数据缓冲区，从下面的代码能看到，我们的 1 个字节就交给了它；这个 msg_iovlen 是 msg_iov 的个数，不是什么长度。</p>
+<p>msg_iov 成员指向一个 struct iovec 数组， iovc 结构体在 sys/uio.h 头文件定义，它没有什么特别的。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> iovec &#123;  </span><br><span class="line">     <span class="keyword">ptr_t</span> iov_base; <span class="comment">/* Starting address */</span> </span><br><span class="line">     <span class="keyword">size_t</span> iov_len; <span class="comment">/* Length in bytes */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>有了 iovec ，就可以使用 readv 和 writev 函数在一次函数调用中读取或是写入多个缓冲区，显然比多次 read ，write 更有效率。 readv 和 writev 的函数原型如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">readv</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">struct</span> iovec *<span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">writev</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">struct</span> iovec *<span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>3 附属数据缓冲区成员 msg_control 与 msg_controllen ，描述符就是通过它发送的，后面将会看到，msg_control 指向附属数据缓冲区，而 msg_controllen 指明了缓冲区大小。</p>
+<p>4 接收信息标记位 msg_flags ；忽略</p>
+<p>轮到 cmsghdr 结构了，附属信息可以包括若干个单独的附属数据对象。在每一个对象之前都有一个 struct cmsghdr 结构。头部之后是填充字节，然后是对象本身。最后，附属数据对象之后，下一个 cmsghdr 之前也许要有更多的填充字节。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> cmsghdr &#123;  </span><br><span class="line">    <span class="keyword">socklen_t</span> cmsg_len;  </span><br><span class="line">    <span class="keyword">int</span>       cmsg_level;  </span><br><span class="line">    <span class="keyword">int</span>       cmsg_type;  </span><br><span class="line">    <span class="comment">/* u_char     cmsg_data[]; */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>cmsg_len 附属数据的字节数，这包含结构头的尺寸，这个值是由 CMSG_LEN() 宏计算的；</p>
+<p>cmsg_level 表明了原始的协议级别 ( 例如， SOL_SOCKET) ；</p>
+<p>cmsg_type 表明了控制信息类型 ( 例如， SCM_RIGHTS ，附属数据对象是文件描述符； SCM_CREDENTIALS，附属数据对象是一个包含证书信息的结构 ) ；</p>
+<p>被注释的 cmsg_data 用来指明实际的附属数据的位置，帮助理解。</p>
+<p>对于 cmsg_level 和 cmsg_type ，当下我们只关心 SOL_SOCKET 和 SCM_RIGHTS 。</p>
+<p>msghdr 和 cmsghdr 辅助宏<br>这些结构还是挺复杂的， Linux 系统提供了一系列的宏来简化我们的工作，这些宏可以在不同的 UNIX 平台之间进行移植。这些宏是由 cmsg(3) 的 man 手册页描述的，先来认识一下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct</span> cmsghdr *<span class="title">CMSG_FIRSTHDR</span><span class="params">(<span class="keyword">struct</span> msghdr *msgh)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">struct</span> cmsghdr *<span class="title">CMSG_NXTHDR</span><span class="params">(<span class="keyword">struct</span> msghdr *msgh, <span class="keyword">struct</span> cmsghdr *cmsg)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">size_t</span> CMSG_ALIGN(<span class="keyword">size_t</span> length);</span><br><span class="line"></span><br><span class="line"><span class="keyword">size_t</span> CMSG_SPACE(<span class="keyword">size_t</span> length);</span><br><span class="line"></span><br><span class="line"><span class="keyword">size_t</span> CMSG_LEN(<span class="keyword">size_t</span> length);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">CMSG_DATA</span><span class="params">(<span class="keyword">struct</span> cmsghdr *cmsg)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>CMSG_LEN() 宏<br>输入参数：附属数据缓冲区中的对象大小；<br>计算 cmsghdr 头结构加上附属数据大小，包括必要的对其字段，这个值用来设置 cmsghdr 对象的 cmsg_len 成员。</p>
+<p>CMSG_SPACE() 宏<br>输入参数：附属数据缓冲区中的对象大小；<br>计算 cmsghdr 头结构加上附属数据大小，并包括对其字段和可能的结尾填充字符，注意 CMSG_LEN() 值并不包括可能的结尾填充字符。 CMSG_SPACE() 宏对于确定所需的缓冲区尺寸是十分有用的。<br>注意如果在缓冲区中有多个附属数据，一定要同时添加多个 CMSG_SPACE() 宏调用来得到所需的总空间。</p>
+<p>下面的例子反映了二者的区别：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"CMSG_SPACE(sizeof(short))=%d/n"</span>, CMSG_SPACE(<span class="keyword">sizeof</span>(<span class="keyword">short</span>))); <span class="comment">// 返回16</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"CMSG_LEN(sizeof(short))=%d/n"</span>, CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">short</span>))); <span class="comment">// 返回14</span></span><br></pre></td></tr></table></figure></p>
+<p>CMSG_DATA() 宏<br>输入参数：指向 cmsghdr 结构的指针;<br>返回跟随在头部以及填充字节之后的附属数据的第一个字节 ( 如果存在 ) 的地址，比如传递描述符时，代码将是如下的形式：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> cmsgptr *cmptr;</span><br><span class="line">. . .</span><br><span class="line"><span class="keyword">int</span> fd = *(<span class="keyword">int</span> *)CMSG_DATA(cmptr); <span class="comment">// 发送：*(int *)CMSG_DATA(cmptr) = fd;</span></span><br></pre></td></tr></table></figure></p>
+<p>CMSG_FIRSTHDR() 宏<br>输入参数：指向 struct msghdr 结构的指针；<br>返回指向附属数据缓冲区内的第一个附属对象的 struct cmsghdr 指针。如果不存在附属数据对象则返回的指针值为 NULL 。</p>
+<p>CMSG_NXTHDR() 宏<br>输入参数：指向 struct msghdr 结构的指针，指向当前 struct cmsghdr 的指针；<br>这个用于返回下一个附属数据对象的 struct cmsghdr 指针，如果没有下一个附属数据对象，这个宏就会返回NULL 。</p>
+<p>通过这两个宏可以很容易遍历所有的附属数据，像下面的形式：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> msghdr msgh;  </span><br><span class="line"><span class="keyword">struct</span> cmsghdr *cmsg;  </span><br><span class="line"><span class="keyword">for</span> (cmsg = CMSG_FIRSTHDR(&amp;msgh); cmsg != <span class="literal">NULL</span>;  </span><br><span class="line">    cmsg = CMSG_NXTHDR(&amp;msgh,cmsg) &#123;  </span><br><span class="line">    <span class="comment">// 得到了cmmsg，就能通过CMSG_DATA()宏取得辅助数据了;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>函数 sendmsg 和 recvmsg<br>函数原型如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sendmsg</span><span class="params">(<span class="keyword">int</span> s, <span class="keyword">const</span> <span class="keyword">struct</span> msghdr *msg, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">recvmsg</span><span class="params">(<span class="keyword">int</span> s, <span class="keyword">struct</span> msghdr *msg, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>二者的参数说明如下：<br>s， 套接字通道，对于 sendmsg 是发送套接字，对于 recvmsg 则对应于接收套接字；<br>msg ，信息头结构指针；<br>flags ， 可选的标记位， 这与 send 或是 sendto 函数调用的标记相同。<br>函数的返回值为实际发送 / 接收的字节数。否则返回 -1 表明发生了错误。<br>具体参考 APUE 的高级 I/O 部分，介绍的很详细。</p>
+<p>发送描述符<br>经过了前面的准备工作，是时候发送描述符了，先来看看函数原型：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">write_fd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *ptr, <span class="keyword">int</span> nbytes, <span class="keyword">int</span> sendfd)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>参数说明如下：<br>@fd ：发送 TCP 套接字接口；这个可以是使用socketpair返回的发送套接字接口<br>@ptr ：发送数据的缓冲区指针；<br>@nbytes ：发送的字节数；<br>@sendfd ：向接收进程发送的描述符；<br>函数返回值为写入的字节数， &lt;0 说明发送失败；</p>
+<p>废话少说，代码先上，发送描述符的代码相对简单一些，说明见代码内注释。<br>先说明一下，旧的 Unix 系统使用的是 msg_accrights 域来传递描述符，因此我们需要使用宏HAVE_MSGHDR_MSG_CONTROL 以期能同时支持这两种版本。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">write_fd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *ptr, <span class="keyword">int</span> nbytes, <span class="keyword">int</span> sendfd)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    <span class="keyword">struct</span> msghdr msg;  </span><br><span class="line">    <span class="keyword">struct</span> iovec iov[<span class="number">1</span>];  </span><br><span class="line">    <span class="comment">// 有些系统使用的是旧的msg_accrights域来传递描述符，Linux下是新的msg_control字段  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HAVE_MSGHDR_MSG_CONTROL  </span></span><br><span class="line">    <span class="keyword">union</span>&#123; <span class="comment">// 前面说过，保证cmsghdr和msg_control的对齐  </span></span><br><span class="line">        <span class="keyword">struct</span> cmsghdr cm;  </span><br><span class="line">        <span class="keyword">char</span> control[CMSG_SPACE(<span class="keyword">sizeof</span>(<span class="keyword">int</span>))];  </span><br><span class="line">    &#125;control_un;  </span><br><span class="line">    <span class="keyword">struct</span> cmsghdr *cmptr;   </span><br><span class="line">    <span class="comment">// 设置辅助缓冲区和长度  </span></span><br><span class="line">    msg.msg_control = control_un.control;   </span><br><span class="line">    msg.msg_controllen = <span class="keyword">sizeof</span>(control_un.control);  </span><br><span class="line">    <span class="comment">// 只需要一组附属数据就够了，直接通过CMSG_FIRSTHDR取得  </span></span><br><span class="line">    cmptr = CMSG_FIRSTHDR(&amp;msg);  </span><br><span class="line">    <span class="comment">// 设置必要的字段，数据和长度  </span></span><br><span class="line">    cmptr-&gt;cmsg_len = CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">// fd类型是int，设置长度  </span></span><br><span class="line">    cmptr-&gt;cmsg_level = SOL_SOCKET;   </span><br><span class="line">    cmptr-&gt;cmsg_type = SCM_RIGHTS;  <span class="comment">// 指明发送的是描述符  </span></span><br><span class="line">    *((<span class="keyword">int</span>*)CMSG_DATA(cmptr)) = sendfd; <span class="comment">// 把fd写入辅助数据中  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>  </span></span><br><span class="line">    msg.msg_accrights = (<span class="keyword">caddr_t</span>)&amp;sendfd; <span class="comment">// 这个旧的更方便啊  </span></span><br><span class="line">    msg.msg_accrightslen = <span class="keyword">sizeof</span>(<span class="keyword">int</span>);  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  </span></span><br><span class="line">    <span class="comment">// UDP才需要，无视  </span></span><br><span class="line">    msg.msg_name = <span class="literal">NULL</span>;  </span><br><span class="line">    msg.msg_namelen = <span class="number">0</span>;  </span><br><span class="line">    <span class="comment">// 别忘了设置数据缓冲区，实际上1个字节就够了  </span></span><br><span class="line">    iov[<span class="number">0</span>].iov_base = ptr;  </span><br><span class="line">    iov[<span class="number">0</span>].iov_len = nbytes;  </span><br><span class="line">    msg.msg_iov = iov;  </span><br><span class="line">    msg.msg_iovlen = <span class="number">1</span>;  </span><br><span class="line">    <span class="keyword">return</span> sendmsg(fd, &amp;msg, <span class="number">0</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接收描述符<br>发送方准备好之后，接收方准备接收，函数原型为：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read_fd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *ptr, <span class="keyword">int</span> nbytes, <span class="keyword">int</span> *recvfd)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>参数说明如下：<br>@fd ：接收 TCP 套接字接口； 这个可以是使用 socketpair返回的接收套接字接口<br>@ptr ：接收数据的缓冲区指针；<br>@nbytes ：接收缓冲区大小；<br>@recvfd ：用来接收发送进程发送来的描述符；<br>函数返回值为读取的字节数， &lt;0 说明读取失败；</p>
+<p>接收函数代码如下，相比发送要复杂一些。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read_fd</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">void</span> *ptr, <span class="keyword">int</span> nbytes, <span class="keyword">int</span> *recvfd)</span>  </span><br><span class="line"></span>&#123;  </span><br><span class="line">    <span class="keyword">struct</span> msghdr msg;  </span><br><span class="line">    <span class="keyword">struct</span> iovec iov[<span class="number">1</span>];  </span><br><span class="line">    <span class="keyword">int</span> n;  </span><br><span class="line">    <span class="keyword">int</span> newfd;  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HAVE_MSGHDR_MSG_CONTROL  </span></span><br><span class="line">    <span class="keyword">union</span>&#123; <span class="comment">// 对齐  </span></span><br><span class="line">    <span class="keyword">struct</span> cmsghdr cm;  </span><br><span class="line">    <span class="keyword">char</span> control[CMSG_SPACE(<span class="keyword">sizeof</span>(<span class="keyword">int</span>))];  </span><br><span class="line">    &#125;control_un;  </span><br><span class="line">    <span class="keyword">struct</span> cmsghdr *cmptr;  </span><br><span class="line">    <span class="comment">// 设置辅助数据缓冲区和长度  </span></span><br><span class="line">    msg.msg_control = control_un.control;  </span><br><span class="line">    msg.msg_controllen = <span class="keyword">sizeof</span>(control_un.control);  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>  </span></span><br><span class="line">    msg.msg_accrights = (<span class="keyword">caddr_t</span>) &amp;newfd; <span class="comment">// 这个简单  </span></span><br><span class="line">    msg.msg_accrightslen = <span class="keyword">sizeof</span>(<span class="keyword">int</span>);  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>   </span></span><br><span class="line">       </span><br><span class="line">    <span class="comment">// TCP无视  </span></span><br><span class="line">    msg.msg_name = <span class="literal">NULL</span>;  </span><br><span class="line">    msg.msg_namelen = <span class="number">0</span>;  </span><br><span class="line">    <span class="comment">// 设置数据缓冲区  </span></span><br><span class="line">    iov[<span class="number">0</span>].iov_base = ptr;  </span><br><span class="line">    iov[<span class="number">0</span>].iov_len = nbytes;  </span><br><span class="line">    msg.msg_iov = iov;  </span><br><span class="line">    msg.msg_iovlen = <span class="number">1</span>;  </span><br><span class="line">    <span class="comment">// 设置结束，准备接收  </span></span><br><span class="line">    <span class="keyword">if</span>((n = recvmsg(fd, &amp;msg, <span class="number">0</span>)) &lt;= <span class="number">0</span>)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">return</span> n;  </span><br><span class="line">    &#125;  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HAVE_MSGHDR_MSG_CONTROL  </span></span><br><span class="line">    <span class="comment">// 检查是否收到了辅助数据，以及长度，回忆上一节的CMSG宏  </span></span><br><span class="line">    cmptr = CMSG_FIRSTHDR(&amp;msg);  </span><br><span class="line">    <span class="keyword">if</span>((cmptr != <span class="literal">NULL</span>) &amp;&amp; (cmptr-&gt;cmsg_len == CMSG_LEN(<span class="keyword">sizeof</span>(<span class="keyword">int</span>))))  </span><br><span class="line">    &#123;  </span><br><span class="line">    <span class="comment">// 还是必要的检查  </span></span><br><span class="line">        <span class="keyword">if</span>(cmptr-&gt;cmsg_level != SOL_SOCKET)  </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"control level != SOL_SOCKET/n"</span>);  </span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">-1</span>);  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">if</span>(cmptr-&gt;cmsg_type != SCM_RIGHTS)  </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"control type != SCM_RIGHTS/n"</span>);  </span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">-1</span>);  </span><br><span class="line">        &#125;  </span><br><span class="line">    <span class="comment">// 好了，描述符在这  </span></span><br><span class="line">        *recvfd = *((<span class="keyword">int</span>*)CMSG_DATA(cmptr));  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>(cmptr == <span class="literal">NULL</span>) <span class="built_in">printf</span>(<span class="string">"null cmptr, fd not passed./n"</span>);  </span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"message len[%d] if incorrect./n"</span>, cmptr-&gt;cmsg_len);  </span><br><span class="line">        *recvfd = <span class="number">-1</span>; <span class="comment">// descriptor was not passed  </span></span><br><span class="line">    &#125;  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>  </span></span><br><span class="line">    <span class="keyword">if</span>(msg.msg_accrightslen == <span class="keyword">sizeof</span>(<span class="keyword">int</span>)) *recvfd = newfd;   </span><br><span class="line">    <span class="keyword">else</span> *recvfd = <span class="number">-1</span>;  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  </span></span><br><span class="line">    <span class="keyword">return</span> n;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>发送和接收函数就这么多，就像上面看到的，进程间传递套接字还是有点麻烦的。Linux的就介绍完了，后面在简单说说Windows是如何传递的。</p>
+<p>Windows平台上内核对象都是HANDLE，如果要在进程间传递内核对象，Windows提供了DuplicateHandle函数。复制的HANDLE和原HANDLE实际上指向的是内核中的同一个对象。<br>对于Socket而言，则需要使用WSADuplicateSocket来传递Socket，这个操作不像DuplicateHandle那么直观，先来看看函数原型：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">WSADuplicateSocket</span><span class="params">(</span><br><span class="line">SOCKET s, <span class="comment">// 要复制的socket对象</span></span><br><span class="line">DWORD dwProcessId, <span class="comment">// 接收进程的进程号</span></span><br><span class="line">LPWSAPROTOCOL_INFO lpProtocolInfo <span class="comment">// 把Socket的信息复制到这里</span></span><br><span class="line">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>了解这个函数后，就可以简单的步骤。<br>1 首先发送进程要知道接收进程是谁，这个得靠进程间通信了，比如一块共享内存。<br>2 确认接收进程后，接着发送进程调用WSADuplicateSocket取得一个WSAPROTOCOL_INFO结构，这个结构是复制Socket的关键，不过不必太关心这个结构里面都是什么东西。<br>3 发送进程拿到这个结构后，得把它交给接收进程，拿到WSAPROTOCOL_INFO后，接收进程就可以复制发送进程的Socket了，这个也可以通过共享内存传递。<br>4 接收进程调用WSASocket函数，传递这个接收到的WSAPROTOCOL_INFO结构就可以复制Socket了。<br>需要注意的是，复制的Socket并不是一个真正的新的socket，只是一个复制品，它和原Socket共享所有的状态信息。<br>如果原Socket是使用socket函数创建的，那么接收进程调用WSASocket时必须指明WSA_FLAG_OVERLAPPED标记。</p>
+<p>本文转载自：sparkliang的专栏</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/archives/transfor-descriptor.html">进程间传递描述符</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Vic 的个人博客">Vic</a></p>
+        <p><span>发布时间:</span>2014年12月21日 - 16时22分</p>
+        <p><span>最后更新:</span>2016年03月13日 - 00时45分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/archives/transfor-descriptor.html" title="进程间传递描述符">http://blog.libgod.com/archives/transfor-descriptor.html</a>
+            <span class="copy-path" data-clipboard-text="原文: http://blog.libgod.com/archives/transfor-descriptor.html　　作者: Vic" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/archives/stl-vector-erase-question.html">
+                    stl::vector erase 时元素析构问题的辟谣
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/archives/likely-and-unlikely.html">
+                    内核中的 likely()与unlikely()
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="archives/transfor-descriptor.html" data-title="进程间传递描述符" data-url="http://blog.libgod.com/archives/transfor-descriptor.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"libgod"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/archives/stl-vector-erase-question.html" title="上一篇: stl::vector erase 时元素析构问题的辟谣">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/archives/likely-and-unlikely.html" title="下一篇: 内核中的 likely()与unlikely()">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/archives/about-coroutine.html">聊聊协程</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/vim-config-v1-0.html">一款精致的VIM配置vim_config发布</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/wake-on-lan-code.html">远程开机脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tcp-echo-server.html">简单的echo服务器</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/stl-vector-erase-question.html">stl::vector erase 时元素析构问题的辟谣</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/transfor-descriptor.html">进程间传递描述符</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/likely-and-unlikely.html">内核中的 likely()与unlikely()</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/multi-server-framework.html">游戏多服务器架构的一点想法</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tuple-class.html">C++实现的Tuple类，非常好用</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/uuid-class.html">UUID的封装类</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/check-dead-lock.html">如何检测死锁并快速定位死锁位置</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tls-performance.html">几种线程本地存储变量和普通变量的性能比较</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/multi-index-container-performance.html">multi_index_container性能测试</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Vic
+            </div>
+            <div class="footer-right">
+                <script src="http://s24.cnzz.com/stat.php?id=4739340&web_id=4739340&show=pic" language="JavaScript"></script>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UUID的封装类 | Vic的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="UUID，即通用唯一识别码，产生的随机数据重复概率几乎为零，平时写程序的时候还是会用到，所以封装了一下，使用起来更简单了。头文件：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UUID的封装类">
+<meta property="og:url" content="http://blog.libgod.com/archives/uuid-class.html">
+<meta property="og:site_name" content="Vic的博客">
+<meta property="og:description" content="UUID，即通用唯一识别码，产生的随机数据重复概率几乎为零，平时写程序的时候还是会用到，所以封装了一下，使用起来更简单了。头文件：">
+<meta property="og:updated_time" content="2016-03-12T16:45:19.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UUID的封装类">
+<meta name="twitter:description" content="UUID，即通用唯一识别码，产生的随机数据重复概率几乎为零，平时写程序的时候还是会用到，所以封装了一下，使用起来更简单了。头文件：">
+  
+    <link rel="alternative" href="/atom.xml" title="Vic的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+      <script>
+          var _hmt = _hmt || [];
+          (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?b6483c72a5edf9fd85aac6f170cd4513";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+          })();
+      </script>
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <!-- <div class="overlay"></div> -->
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Vic</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">致力于高并发服务端研发..</p>
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/tags">分类标签</a></li>
+                        
+                            <li><a href="//libgod.com">libGod</a></li>
+                        
+                            <li><a href="/vim-config">VIM配置</a></li>
+                        
+                            <li><a href="/wake-on-lan">远程开机</a></li>
+                        
+                            <li><a href="/signature">艺术签名</a></li>
+                        
+                            <li><a href="/about">关于我们</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tag/boost/" style="font-size: 10px;">Boost</a> <a href="/tag/c-cplusplus/" style="font-size: 20px;">C/C++</a> <a href="/tag/linux/" style="font-size: 20px;">Linux</a> <a href="/tag/python/" style="font-size: 10px;">Python</a> <a href="/tag/stl/" style="font-size: 10px;">STL</a> <a href="/tag/socket/" style="font-size: 10px;">Socket</a> <a href="/tag/vim/" style="font-size: 10px;">Vim</a> <a href="/tag/coroutine/" style="font-size: 10px;">协程</a> <a href="/tag/multithread/" style="font-size: 20px;">多线程</a> <a href="/tag/benchmark/" style="font-size: 20px;">性能测试</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://www.oschina.net">开源中国</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Vic</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Vic</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">致力于高并发服务端研发..</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/tags">分类标签</a></li>
+                
+                    <li><a href="//libgod.com">libGod</a></li>
+                
+                    <li><a href="/vim-config">VIM配置</a></li>
+                
+                    <li><a href="/wake-on-lan">远程开机</a></li>
+                
+                    <li><a href="/signature">艺术签名</a></li>
+                
+                    <li><a href="/about">关于我们</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-uuid-class" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/uuid-class.html" class="article-date">
+      <time datetime="2014-12-21T08:18:06.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UUID的封装类
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/programing-language/">编程语言</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/c-cplusplus/">C/C++</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>UUID，即通用唯一识别码，产生的随机数据重复概率几乎为零，平时写程序的时候还是会用到，所以封装了一下，使用起来更简单了。<br>头文件：</p>
+<a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> God &#123;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">struct</span> Uuid &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    DEFINE_PTR(Uuid);  </span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">uint16_t</span> size_type;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">enum</span> &#123;  </span><br><span class="line">        UUID_LENGTH = <span class="keyword">sizeof</span>(<span class="keyword">uuid_t</span>),  </span><br><span class="line">    &#125;;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    Uuid(<span class="keyword">bool</span> empty = <span class="literal">false</span>) &#123;  </span><br><span class="line">        reset(empty);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    Uuid(<span class="keyword">const</span> <span class="keyword">byte_t</span> *data, size_type len) &#123;  </span><br><span class="line">        reset(data, len);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    Uuid(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;str) &#123;  </span><br><span class="line">        reset(str.c_str());  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    Uuid(<span class="keyword">const</span> <span class="keyword">char</span> *str) &#123;  </span><br><span class="line">        reset(str);  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">bool</span> empty = <span class="literal">false</span>)</span></span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">const</span> byte_t *data, size_type len)</span></span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;str)</span> </span>&#123;  </span><br><span class="line">        reset(str.c_str());  </span><br><span class="line">    &#125;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span></span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="function">size_type <span class="title">toByteArray</span><span class="params">(byte_t *data, size_type len)</span> <span class="keyword">const</span></span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">toString</span><span class="params">()</span> <span class="keyword">const</span></span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Uuid &amp;rhs) <span class="keyword">const</span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> == (<span class="keyword">const</span> Uuid &amp;rhs) <span class="keyword">const</span>;  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> != (<span class="keyword">const</span> Uuid &amp;rhs) <span class="keyword">const</span>;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">static</span> Uuid Empty;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="keyword">uuid_t</span> m_data;  </span><br><span class="line">&#125;;  </span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现文件：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> God &#123;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">const</span> Uuid Uuid::Empty(<span class="literal">true</span>);  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">void</span> Uuid::reset(<span class="keyword">bool</span> empty) &#123;  </span><br><span class="line">    <span class="keyword">if</span> (empty) &#123;  </span><br><span class="line">        uuid_clear(m_data);  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        uuid_generate(m_data);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">void</span> Uuid::reset(<span class="keyword">const</span> <span class="keyword">byte_t</span> *data, size_type len) &#123;  </span><br><span class="line">    <span class="keyword">if</span> (len != (size_type)UUID_LENGTH) &#123;  </span><br><span class="line">        GOD_THROW_EXCEPTION(InvalidArgumentException(<span class="string">"len"</span>));  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="built_in">memcpy</span>(m_data, data, (size_type)UUID_LENGTH);  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">void</span> Uuid::reset(<span class="keyword">const</span> <span class="keyword">char</span> *str) &#123;  </span><br><span class="line">    <span class="keyword">if</span> (uuid_parse(str, m_data) == <span class="number">-1</span>) &#123;  </span><br><span class="line">        GOD_THROW_EXCEPTION_FROM_LAST_ERROR_WITH_API(<span class="string">"uuid_parse"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">bool</span> Uuid::empty() <span class="keyword">const</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> uuid_is_null(m_data) != <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line">Uuid::size_type Uuid::toByteArray(<span class="keyword">byte_t</span> *data, size_type len) <span class="keyword">const</span> &#123;  </span><br><span class="line">    size_type copyLen = <span class="built_in">std</span>::min(len, (size_type)UUID_LENGTH);  </span><br><span class="line">    <span class="built_in">memcpy</span>(data, m_data, copyLen);  </span><br><span class="line">    <span class="keyword">return</span> copyLen;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> Uuid::toString() <span class="keyword">const</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> hexstringFromData(m_data, (size_type)UUID_LENGTH);  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">bool</span> Uuid::<span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Uuid &amp;rhs) <span class="keyword">const</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">memcmp</span>(m_data, rhs.m_data, (size_type)UUID_LENGTH) &lt; <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">bool</span> Uuid::<span class="keyword">operator</span> == (<span class="keyword">const</span> Uuid &amp;rhs) <span class="keyword">const</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">memcmp</span>(m_data, rhs.m_data, (size_type)UUID_LENGTH) == <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="keyword">bool</span> Uuid::<span class="keyword">operator</span> != (<span class="keyword">const</span> Uuid &amp;rhs) <span class="keyword">const</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">memcmp</span>(m_data, rhs.m_data, (size_type)UUID_LENGTH) != <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有需要的直接拿去用吧，呵呵..</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/archives/uuid-class.html">UUID的封装类</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Vic 的个人博客">Vic</a></p>
+        <p><span>发布时间:</span>2014年12月21日 - 16时18分</p>
+        <p><span>最后更新:</span>2016年03月13日 - 00时45分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/archives/uuid-class.html" title="UUID的封装类">http://blog.libgod.com/archives/uuid-class.html</a>
+            <span class="copy-path" data-clipboard-text="原文: http://blog.libgod.com/archives/uuid-class.html　　作者: Vic" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/archives/tuple-class.html">
+                    C++实现的Tuple类，非常好用
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/archives/check-dead-lock.html">
+                    如何检测死锁并快速定位死锁位置
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="archives/uuid-class.html" data-title="UUID的封装类" data-url="http://blog.libgod.com/archives/uuid-class.html"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"libgod"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/archives/tuple-class.html" title="上一篇: C++实现的Tuple类，非常好用">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/archives/check-dead-lock.html" title="下一篇: 如何检测死锁并快速定位死锁位置">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/archives/about-coroutine.html">聊聊协程</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/vim-config-v1-0.html">一款精致的VIM配置vim_config发布</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/wake-on-lan-code.html">远程开机脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tcp-echo-server.html">简单的echo服务器</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/stl-vector-erase-question.html">stl::vector erase 时元素析构问题的辟谣</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/transfor-descriptor.html">进程间传递描述符</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/likely-and-unlikely.html">内核中的 likely()与unlikely()</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/multi-server-framework.html">游戏多服务器架构的一点想法</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tuple-class.html">C++实现的Tuple类，非常好用</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/uuid-class.html">UUID的封装类</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/check-dead-lock.html">如何检测死锁并快速定位死锁位置</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/tls-performance.html">几种线程本地存储变量和普通变量的性能比较</a></li><li class="post-list-item"><a class="post-list-link" href="/archives/multi-index-container-performance.html">multi_index_container性能测试</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Vic
+            </div>
+            <div class="footer-right">
+                <script src="http://s24.cnzz.com/stat.php?id=4739340&web_id=4739340&show=pic" language="JavaScript"></script>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

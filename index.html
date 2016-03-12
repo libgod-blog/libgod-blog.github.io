@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vic的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="致力于高并发服务端研发..">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vic的博客">
+<meta property="og:url" content="http://blog.libgod.com/index.html">
+<meta property="og:site_name" content="Vic的博客">
+<meta property="og:description" content="致力于高并发服务端研发..">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vic的博客">
+<meta name="twitter:description" content="致力于高并发服务端研发..">
+  
+    <link rel="alternative" href="/atom.xml" title="Vic的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+    
+    
+  
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: true,
+          isPost: false,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false,
+      }
+  </script>
+
+  
+      <script>
+          yiliaConfig.rootUrl = "/";
+      </script>
+  
+
+  
+      <script>
+          var _hmt = _hmt || [];
+          (function() {
+              var hm = document.createElement("script");
+              hm.src = "//hm.baidu.com/hm.js?b6483c72a5edf9fd85aac6f170cd4513";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+          })();
+      </script>
+  
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <!-- <div class="overlay"></div> -->
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Vic</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">致力于高并发服务端研发..</p>
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/tags">分类标签</a></li>
+                        
+                            <li><a href="//libgod.com">libGod</a></li>
+                        
+                            <li><a href="/vim-config">VIM配置</a></li>
+                        
+                            <li><a href="/wake-on-lan">远程开机</a></li>
+                        
+                            <li><a href="/signature">艺术签名</a></li>
+                        
+                            <li><a href="/about">关于我们</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tag/boost/" style="font-size: 10px;">Boost</a> <a href="/tag/c-cplusplus/" style="font-size: 20px;">C/C++</a> <a href="/tag/linux/" style="font-size: 20px;">Linux</a> <a href="/tag/python/" style="font-size: 10px;">Python</a> <a href="/tag/stl/" style="font-size: 10px;">STL</a> <a href="/tag/socket/" style="font-size: 10px;">Socket</a> <a href="/tag/vim/" style="font-size: 10px;">Vim</a> <a href="/tag/coroutine/" style="font-size: 10px;">协程</a> <a href="/tag/multithread/" style="font-size: 20px;">多线程</a> <a href="/tag/benchmark/" style="font-size: 20px;">性能测试</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://www.oschina.net">开源中国</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Vic</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Vic</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">致力于高并发服务端研发..</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/tags">分类标签</a></li>
+                
+                    <li><a href="//libgod.com">libGod</a></li>
+                
+                    <li><a href="/vim-config">VIM配置</a></li>
+                
+                    <li><a href="/wake-on-lan">远程开机</a></li>
+                
+                    <li><a href="/signature">艺术签名</a></li>
+                
+                    <li><a href="/about">关于我们</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-about-coroutine" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/about-coroutine.html" class="article-date">
+      <time datetime="2016-02-22T09:38:25.000Z" itemprop="datePublished">2016-02-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/about-coroutine.html">聊聊协程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h2 id="什么是协程"><a href="#什么是协程" class="headerlink" title="什么是协程"></a>什么是协程</h2><p>协程，又称用户态线程，微软给他取名叫纤程。协程的概念早在几十年前就有了，但直到最近几年才慢慢得到广泛应用，很多的编程语言也陆续支持协程。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/explore/">深入研究</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/coroutine/">协程</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/about-coroutine.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-vim-config-v1-0" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/vim-config-v1-0.html" class="article-date">
+      <time datetime="2015-01-27T01:51:07.000Z" itemprop="datePublished">2015-01-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/vim-config-v1-0.html">一款精致的VIM配置vim_config发布</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>vim_config一款非常精致的vim配置，集成常用的插件，精美的配色，使用方法简单。如果你是一个vim新手，vim_config正适合你。如果你是vim高手，但又讨厌复杂的vim配置，vim_config同样适合你。</p>
+<p>内容更新：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/operating-system/">操作系统</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/vim/">Vim</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/vim-config-v1-0.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-wake-on-lan-code" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/wake-on-lan-code.html" class="article-date">
+      <time datetime="2015-01-23T13:52:17.000Z" itemprop="datePublished">2015-01-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/wake-on-lan-code.html">远程开机脚本</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>以前用笔记本都习惯不关机，这样在哪都能随时远程上去。现在换台式机不能那么干了，有点太浪费电。于是写了个脚本，需要用家里电脑时，随时远程开机，这样不用家里电脑一直开着，也挺方便。<br>代码如下：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/programing-language/">编程语言</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/python/">Python</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/wake-on-lan-code.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-tcp-echo-server" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/tcp-echo-server.html" class="article-date">
+      <time datetime="2014-12-25T10:59:15.000Z" itemprop="datePublished">2014-12-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/tcp-echo-server.html">简单的echo服务器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>本文编写的是基于libGod网络库的echo服务器示例程序，服务器把从客户端收到的任何数据不加处理的直接发给客户端。</p>
+<p>首先是获取本机地址，并监听端口，然后为每个监听的socket启动一个处理协程：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/individual-project/">个人项目</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/socket/">Socket</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/tcp-echo-server.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-stl-vector-erase-question" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/stl-vector-erase-question.html" class="article-date">
+      <time datetime="2014-12-21T08:28:44.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/stl-vector-erase-question.html">stl::vector erase 时元素析构问题的辟谣</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>网上传言，标准库中的vector在调用erase函数删除元素时，存在元素析构问题。其实是那篇文章的例子有问题(文章地址就不贴了，想看去google搜)，vector的erase函数是完全没问题的，大家可以放心用。看下面源码：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/programing-language/">编程语言</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/stl/">STL</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/stl-vector-erase-question.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-transfor-descriptor" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/transfor-descriptor.html" class="article-date">
+      <time datetime="2014-12-21T08:22:34.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/transfor-descriptor.html">进程间传递描述符</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>每个进程都拥有自己独立的进程空间，这使得描述符在进程之间的传递变得有点复杂，这个属于高级进程间通信的内容，下面就来说说。顺便把 Linux 和 Windows 平台都讲讲。</p>
+<p>Linux 下的描述符传递<br>Linux 系统系下，子进程会自动继承父进程已打开的描述符，实际应用中，可能父进程需要向子进程传递“后打开的描述符”，或者子进程需要向父进程传递；或者两个进程可能是无关的，显然这需要一套传递机制。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/operating-system/">操作系统</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/linux/">Linux</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/transfor-descriptor.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-likely-and-unlikely" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/likely-and-unlikely.html" class="article-date">
+      <time datetime="2014-12-21T08:22:14.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/likely-and-unlikely.html">内核中的 likely()与unlikely()</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>在 2.6 内核中，随处可以见到 likely() 和 unlikely() 的身影，那么为什么要用它们？它们之间有什么区别？</p>
+<p>首先要明确：</p>
+<blockquote>
+<p>if(likely(value)) 等价于 if(value)<br>if(unlikely(value)) 也等价于 if(value)</p>
+</blockquote>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/operating-system/">操作系统</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/linux/">Linux</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/likely-and-unlikely.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-multi-server-framework" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/multi-server-framework.html" class="article-date">
+      <time datetime="2014-12-21T08:21:54.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/multi-server-framework.html">游戏多服务器架构的一点想法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>把网络游戏服务器分拆成多个进程，分开部署。这种设计的好处是模块自然分离，可以单独设计。分担负荷，可以提高整个系统的承载能力。</p>
+<p>缺点在于，网络环境并不那么可靠。跨进程通讯有一定的不可预知性。服务器间通讯往往难以架设调试环境，并很容易把事情搅成一团糨糊。而且正确高效的管理多连接，对程序员来说也是一项挑战。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/architectural-design/">架构设计</a>
+    </div>
+
+
+      
+      
+        <p class="article-more-link">
+          <a  href="/archives/multi-server-framework.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-tuple-class" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/tuple-class.html" class="article-date">
+      <time datetime="2014-12-21T08:20:19.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/tuple-class.html">C++实现的Tuple类，非常好用</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>C++实现的Tuple类，非常好用，新老编译器都支持。在编译器支持可变模版参数的情况下，这个Tuple支持任意多成员，不支持的情况下，支持的成员是有限的，现在只支持3个成员，需要支持跟多成员，也可以轻松扩展下。有码有真相：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/programing-language/">编程语言</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/c-cplusplus/">C/C++</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/tuple-class.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-uuid-class" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/archives/uuid-class.html" class="article-date">
+      <time datetime="2014-12-21T08:18:06.000Z" itemprop="datePublished">2014-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/uuid-class.html">UUID的封装类</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>UUID，即通用唯一识别码，产生的随机数据重复概率几乎为零，平时写程序的时候还是会用到，所以封装了一下，使用起来更简单了。<br>头文件：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/programing-language/">编程语言</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/c-cplusplus/">C/C++</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/archives/uuid-class.html#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Vic
+            </div>
+            <div class="footer-right">
+                <script src="http://s24.cnzz.com/stat.php?id=4739340&web_id=4739340&show=pic" language="JavaScript"></script>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+    <script src="/js/GithubRepoWidget.js"></script>
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
