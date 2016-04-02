@@ -3,42 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>远程开机 | Vic的博客</title>
+  <title>Archives: 2016/4 | Vic的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="远程开机工具一款小巧的网络远程开机工具，如果你经常在公司远程家里的电脑，这款工具正适合你。
-介绍
-同一局域网内的机器，只需指定目标主机的MAC地址，就令远程主机开机。
-非同一局域网的情况下，除需指定目标主机的MAC地址，还需指定目标主机的地址。
-端口默认为7，你也可以随意指定。
-
-示例
-同一局域网内的使用示例：./wake_on_lan.py -m 12-34-56-78-90-AB
-非同一局域网">
+  <meta name="description" content="致力于高并发服务端研发..">
 <meta property="og:type" content="website">
-<meta property="og:title" content="远程开机">
-<meta property="og:url" content="http://blog.libgod.com/wake-on-lan/index.html">
+<meta property="og:title" content="Vic的博客">
+<meta property="og:url" content="http://blog.libgod.com/archives/2016/04/index.html">
 <meta property="og:site_name" content="Vic的博客">
-<meta property="og:description" content="远程开机工具一款小巧的网络远程开机工具，如果你经常在公司远程家里的电脑，这款工具正适合你。
-介绍
-同一局域网内的机器，只需指定目标主机的MAC地址，就令远程主机开机。
-非同一局域网的情况下，除需指定目标主机的MAC地址，还需指定目标主机的地址。
-端口默认为7，你也可以随意指定。
-
-示例
-同一局域网内的使用示例：./wake_on_lan.py -m 12-34-56-78-90-AB
-非同一局域网">
-<meta property="og:updated_time" content="2016-03-12T16:45:19.439Z">
+<meta property="og:description" content="致力于高并发服务端研发..">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="远程开机">
-<meta name="twitter:description" content="远程开机工具一款小巧的网络远程开机工具，如果你经常在公司远程家里的电脑，这款工具正适合你。
-介绍
-同一局域网内的机器，只需指定目标主机的MAC地址，就令远程主机开机。
-非同一局域网的情况下，除需指定目标主机的MAC地址，还需指定目标主机的地址。
-端口默认为7，你也可以随意指定。
-
-示例
-同一局域网内的使用示例：./wake_on_lan.py -m 12-34-56-78-90-AB
-非同一局域网">
+<meta name="twitter:title" content="Vic的博客">
+<meta name="twitter:description" content="致力于高并发服务端研发..">
   
     <link rel="alternative" href="/atom.xml" title="Vic的博客" type="application/atom+xml">
   
@@ -62,7 +37,7 @@
           animate: true,
           isHome: false,
           isPost: false,
-          isArchive: false,
+          isArchive: true,
           isTag: false,
           isCategory: false,
           open_in_new: false,
@@ -250,147 +225,58 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/wake-on-lan/index.html" class="article-date">
-      <time datetime="2016-03-11T15:50:21.000Z" itemprop="datePublished">2016-03-11</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+          <div class="article-meta">
+              <a href="/archives/context-benchmark.html" class="archive-article-date">
+      <time datetime="2016-04-02T07:57:26.000Z" itemprop="datePublished">04-02</time>
 </a>
-    </div>
+        </div>
+         
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      远程开机
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/archives/context-benchmark.html">协程切换开销测试</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
+        <div class="article-info info-on-archive">
+          
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/category/explore/">深入研究</a>
+    </div>
 
-        
+
+          
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/coroutine/">协程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/benchmark/">性能测试</a></li></ul>
+    </div>
+
+        </div>
         <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
-
-
-          
-        <h2 id="远程开机工具"><a href="#远程开机工具" class="headerlink" title="远程开机工具"></a>远程开机工具</h2><p>一款小巧的网络远程开机工具，如果你经常在公司远程家里的电脑，这款工具正适合你。</p>
-<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><ul>
-<li>同一局域网内的机器，只需指定目标主机的MAC地址，就令远程主机开机。</li>
-<li>非同一局域网的情况下，除需指定目标主机的MAC地址，还需指定目标主机的地址。</li>
-<li>端口默认为7，你也可以随意指定。</li>
-</ul>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><ul>
-<li>同一局域网内的使用示例：<code>./wake_on_lan.py -m 12-34-56-78-90-AB</code></li>
-<li>非同一局域网的使用示例：<code>./wake_on_lan.py -m 12-34-56-78-90-AB -a 8.8.8.8</code></li>
-</ul>
-<h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><p>如果你不能使用该脚本远程开机，可能是主板禁用了网络远程开机，需要改下BIOS设置，具体设置方法Google一下就有了。</p>
-<p><script src="https://git.oschina.net/vic.liu/wake_on_lan/widget_preview"></script> </p>
-<style> .pro_name a{color: #4183c4;} .osc_git_title{background-color: #d8e5f1;} .osc_git_box{background-color: #fafafa;} .osc_git_box{border-color: #ddd;} .osc_git_info{color: #666;} .osc_git_main a{color: #4183c4;} </style>
-
-      
-    </div>
-    
+    </header>
   </div>
-  
-    
-
-
-  
 </article>
-
-
-    <div class="share">
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more"></a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
-    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
-    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
-    </div>
-    <script>
-        window._bd_share_config={
-            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-    </script>
-</div>
-
-
-
-    
-      <div class="duoshuo" id="comments">
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="wake-on-lan/index.html" data-title="远程开机" data-url="http://blog.libgod.com/wake-on-lan/index.html"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:"libgod"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-    <!-- 多说公共JS代码 end -->
-</div>
+  
+  
+    </div></section>
+  
 
     
 
-
-
-
-
-    <script>
-        
-    </script>
 </div>
       <footer id="footer">
     <div class="outer">
@@ -445,6 +331,17 @@
         };
     })
 </script>
+
+    <button class="hide-labels">TAG 开关</button>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js">
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("button").click(function() {
+                $(".article-info").toggle(200);
+            });
+        });
+    </script>
 
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">

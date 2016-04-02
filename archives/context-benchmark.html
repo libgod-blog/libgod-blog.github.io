@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>远程开机脚本 | Vic的博客</title>
+  <title>协程切换开销测试 | Vic的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="以前用笔记本都习惯不关机，这样在哪都能随时远程上去。现在换台式机不能那么干了，有点太浪费电。于是写了个脚本，需要用家里电脑时，随时远程开机，这样不用家里电脑一直开着，也挺方便。代码如下：">
+  <meta name="description" content="前言为了方便其他项目使用协程，最近从Boost中把协程库移植出来，单独分成一个项目。这个协程库没有任何依赖，而且简洁高性能。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="远程开机脚本">
-<meta property="og:url" content="http://blog.libgod.com/archives/wake-on-lan-code.html">
+<meta property="og:title" content="协程切换开销测试">
+<meta property="og:url" content="http://blog.libgod.com/archives/context-benchmark.html">
 <meta property="og:site_name" content="Vic的博客">
-<meta property="og:description" content="以前用笔记本都习惯不关机，这样在哪都能随时远程上去。现在换台式机不能那么干了，有点太浪费电。于是写了个脚本，需要用家里电脑时，随时远程开机，这样不用家里电脑一直开着，也挺方便。代码如下：">
-<meta property="og:updated_time" content="2016-03-12T16:45:19.439Z">
+<meta property="og:description" content="前言为了方便其他项目使用协程，最近从Boost中把协程库移植出来，单独分成一个项目。这个协程库没有任何依赖，而且简洁高性能。">
+<meta property="og:updated_time" content="2016-04-02T13:11:24.481Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="远程开机脚本">
-<meta name="twitter:description" content="以前用笔记本都习惯不关机，这样在哪都能随时远程上去。现在换台式机不能那么干了，有点太浪费电。于是写了个脚本，需要用家里电脑时，随时远程开机，这样不用家里电脑一直开着，也挺方便。代码如下：">
+<meta name="twitter:title" content="协程切换开销测试">
+<meta name="twitter:description" content="前言为了方便其他项目使用协程，最近从Boost中把协程库移植出来，单独分成一个项目。这个协程库没有任何依赖，而且简洁高性能。">
   
     <link rel="alternative" href="/atom.xml" title="Vic的博客" type="application/atom+xml">
   
@@ -226,11 +226,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-wake-on-lan-code" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-context-benchmark" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/archives/wake-on-lan-code.html" class="article-date">
-      <time datetime="2015-01-23T13:52:17.000Z" itemprop="datePublished">2015-01-23</time>
+      <a href="/archives/context-benchmark.html" class="article-date">
+      <time datetime="2016-04-02T07:57:26.000Z" itemprop="datePublished">2016-04-02</time>
 </a>
     </div>
   
@@ -243,7 +243,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      远程开机脚本
+      协程切换开销测试
     </h1>
   
 
@@ -252,13 +252,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/category/programing-language/">编程语言</a>
+    <a class="article-category-link" href="/category/explore/">深入研究</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/python/">Python</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/coroutine/">协程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tag/benchmark/">性能测试</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -268,10 +268,12 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>以前用笔记本都习惯不关机，这样在哪都能随时远程上去。现在换台式机不能那么干了，有点太浪费电。于是写了个脚本，需要用家里电脑时，随时远程开机，这样不用家里电脑一直开着，也挺方便。<br>代码如下：</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了方便其他项目使用协程，最近从Boost中把协程库移植出来，单独分成一个项目。这个协程库没有任何依赖，而且简洁高性能。</p>
 <a id="more"></a>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"><span class="comment"># Created Time:    2015-01-23 16:23:02</span></span><br><span class="line"><span class="comment"># Modified Time:   2015-01-23 18:14:34</span></span><br><span class="line"><span class="comment"># Created By:      Vic &lt;vic@libgod.com&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> optparse <span class="keyword">import</span> OptionParser</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wake</span><span class="params">(addr, mac)</span>:</span></span><br><span class="line">    mac_data = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">12</span>, <span class="number">2</span>):</span><br><span class="line">        mac_data.append(int(mac[i:i+<span class="number">2</span>], <span class="number">16</span>))</span><br><span class="line">    packet = struct.pack(<span class="string">"!BBBBBB"</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>);</span><br><span class="line">    packet_mac = struct.pack(<span class="string">"!BBBBBB"</span>, *mac_data)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">16</span>):</span><br><span class="line">        packet += packet_mac</span><br><span class="line">    <span class="comment">#print "len: ", len(packet), "data: ", packet</span></span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        s.sendto(packet, addr)</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"唤醒数据包发送完成"</span>, addr, mac</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        s.close()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    usage = <span class="string">"%prog [options]"</span></span><br><span class="line">    parser = OptionParser(usage = usage)</span><br><span class="line">    parser.add_option(<span class="string">"-a"</span>, <span class="string">"--addr"</span>, dest=<span class="string">"addr"</span>, help=<span class="string">"Boardcast address"</span>, metavar=<span class="string">"255.255.255.255"</span>)</span><br><span class="line">    parser.add_option(<span class="string">"-p"</span>, <span class="string">"--port"</span>, dest=<span class="string">"port"</span>, help=<span class="string">"Port"</span>, metavar=<span class="string">"7"</span>)</span><br><span class="line">    parser.add_option(<span class="string">"-m"</span>, <span class="string">"--mac"</span>, dest=<span class="string">"mac"</span>, help=<span class="string">"MAC address"</span>, metavar=<span class="string">"FF-FF-FF-FF-FF-FF"</span>)</span><br><span class="line">    (options, args) = parser.parse_args()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> options.mac:</span><br><span class="line">        parser.print_help()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    addr = <span class="string">"255.255.255.255"</span></span><br><span class="line">    port = <span class="number">7</span></span><br><span class="line">    mac = options.mac.replace(<span class="string">"-"</span>, <span class="string">""</span>)</span><br><span class="line">    <span class="keyword">if</span> options.addr:</span><br><span class="line">        addr = options.addr</span><br><span class="line">    <span class="keyword">if</span> len(mac) != <span class="number">12</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"无效的MAC地址: %s"</span> % options.mac</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> options.port:</span><br><span class="line">        port = int(options.port)</span><br><span class="line">    wake((addr, port), mac)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<p>脚本已经试验可用，如果你不能远程开机，可能是主板禁用了网络远程开机，需要改下BIOS设置，具体设置方法Google一下就有了。<br><a href="/wake-on-lan">下载地址</a></p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 切换协程</span></span><br><span class="line"><span class="keyword">intptr_t</span> vic_swap_context(<span class="keyword">vic_context_t</span> *from, <span class="keyword">vic_context_t</span> to, <span class="keyword">intptr_t</span> arg, <span class="keyword">bool</span> preserve_fpu);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化协程</span></span><br><span class="line"><span class="keyword">vic_context_t</span> vic_make_context(<span class="keyword">void</span> *sp, <span class="keyword">size_t</span> size, <span class="keyword">vic_context_entry_t</span> entry);</span><br></pre></td></tr></table></figure>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>下面是一份协程切换性能的测试代码，也算是一个使用协程的例子。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vic/context.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">size_t</span> k_stacksize = <span class="number">1024</span> * <span class="number">64</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">vic_context_t</span> g_main_fiber = invalid_vic_context;</span><br><span class="line"><span class="keyword">vic_context_t</span> g_child_fiber = invalid_vic_context;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">child_entry</span><span class="params">(intptr_t argv)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        vic_swap_context(&amp;g_child_fiber, g_main_fiber, (<span class="keyword">intptr_t</span>)<span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int32_t</span> main(<span class="keyword">int32_t</span> argc, <span class="keyword">char</span> *argv[]) &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> count = <span class="number">10000</span>;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        count = strtoul(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">void</span> *p = <span class="built_in">malloc</span>(k_stacksize);</span><br><span class="line">    <span class="keyword">void</span> *sp = (<span class="keyword">char</span> *)p + k_stacksize;</span><br><span class="line">    g_child_fiber = vic_make_context(sp, k_stacksize, child_entry);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">        vic_swap_context(&amp;g_main_fiber, g_child_fiber, (<span class="keyword">intptr_t</span>)<span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ time ./bin/context_benchmark 1000000000</span><br><span class="line"></span><br><span class="line">real    0m5.102s</span><br><span class="line">user    0m5.100s</span><br><span class="line">sys     0m0.000s</span><br></pre></td></tr></table></figure></p>
+<p>算下来，平均每次切换的消耗大概5.1纳秒。这样在实际应用中，协程切换带来的开销几乎可以忽略不计。</p>
 
       
     </div>
@@ -280,13 +282,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/archives/wake-on-lan-code.html">远程开机脚本</a></p>
+        <p><span>本文标题:</span><a href="/archives/context-benchmark.html">协程切换开销测试</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 Vic 的个人博客">Vic</a></p>
-        <p><span>发布时间:</span>2015年01月23日 - 21时52分</p>
-        <p><span>最后更新:</span>2016年03月13日 - 00时45分</p>
+        <p><span>发布时间:</span>2016年04月02日 - 15时57分</p>
+        <p><span>最后更新:</span>2016年04月02日 - 21时11分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/archives/wake-on-lan-code.html" title="远程开机脚本">http://blog.libgod.com/archives/wake-on-lan-code.html</a>
-            <span class="copy-path" data-clipboard-text="原文: http://blog.libgod.com/archives/wake-on-lan-code.html　　作者: Vic" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/archives/context-benchmark.html" title="协程切换开销测试">http://blog.libgod.com/archives/context-benchmark.html</a>
+            <span class="copy-path" data-clipboard-text="原文: http://blog.libgod.com/archives/context-benchmark.html　　作者: Vic" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -299,16 +301,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/archives/vim-config-v1-0.html">
-                    一款精致的VIM配置vim_config发布
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/archives/tcp-echo-server.html">
-                    简单的echo服务器
+                <a href="/archives/about-coroutine.html">
+                    聊聊协程
                 </a>
             </div>
         
@@ -319,7 +315,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数"><span class="toc-number">2.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性能"><span class="toc-number">3.</span> <span class="toc-text">性能</span></a></li></ol>
 </div>
 <style>
     .left-col .switch-btn {
@@ -383,7 +379,7 @@
     
       <div class="duoshuo" id="comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="archives/wake-on-lan-code.html" data-title="远程开机脚本" data-url="http://blog.libgod.com/archives/wake-on-lan-code.html"></div>
+    <div class="ds-thread" data-thread-key="archives/context-benchmark.html" data-title="协程切换开销测试" data-url="http://blog.libgod.com/archives/context-benchmark.html"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
@@ -407,15 +403,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/archives/vim-config-v1-0.html" title="上一篇: 一款精致的VIM配置vim_config发布">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/archives/tcp-echo-server.html" title="下一篇: 简单的echo服务器">
+            <a href="/archives/about-coroutine.html" title="下一篇: 聊聊协程">
                 <i class="fa fa-angle-right"></i>
             </a>
         

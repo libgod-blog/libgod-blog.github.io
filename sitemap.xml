@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.libgod.com/archives/context-benchmark.html</loc>
+    
+    <lastmod>2016-04-02T13:11:24.481Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.libgod.com/about/index.html</loc>
     
     <lastmod>2016-04-02T07:32:35.089Z</lastmod>
@@ -9,14 +16,7 @@
   </url>
   
   <url>
-    <loc>http://blog.libgod.com/archives/tcp-echo-server.html</loc>
-    
-    <lastmod>2016-03-12T16:45:19.439Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.libgod.com/archives/likely-and-unlikely.html</loc>
+    <loc>http://blog.libgod.com/archives/wake-on-lan-code.html</loc>
     
     <lastmod>2016-03-12T16:45:19.439Z</lastmod>
     
@@ -65,14 +65,14 @@
   </url>
   
   <url>
-    <loc>http://blog.libgod.com/archives/check-dead-lock.html</loc>
+    <loc>http://blog.libgod.com/archives/tcp-echo-server.html</loc>
     
     <lastmod>2016-03-12T16:45:19.439Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.libgod.com/archives/wake-on-lan-code.html</loc>
+    <loc>http://blog.libgod.com/archives/check-dead-lock.html</loc>
     
     <lastmod>2016-03-12T16:45:19.439Z</lastmod>
     
@@ -93,6 +93,13 @@
   </url>
   
   <url>
+    <loc>http://blog.libgod.com/archives/multi-index-container-performance.html</loc>
+    
+    <lastmod>2016-03-12T16:45:19.439Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.libgod.com//404.html</loc>
     
     <lastmod>2016-03-12T16:45:19.439Z</lastmod>
@@ -100,7 +107,7 @@
   </url>
   
   <url>
-    <loc>http://blog.libgod.com/archives/multi-index-container-performance.html</loc>
+    <loc>http://blog.libgod.com/archives/likely-and-unlikely.html</loc>
     
     <lastmod>2016-03-12T16:45:19.439Z</lastmod>
     
